@@ -95,3 +95,91 @@ export function checkBraces(string) {
     }
     return stack.isEmpty;
 }
+/*2)Сформировать список(структура данных LinkedList) целых чисел, вводимых пользователем,
+в том порядке, в котором вводятся эти числа, но без повторений элементов.*/
+class ListNode {
+    constructor(value) {
+        this.value = value;
+        this.next = null;
+    }
+}
+
+export class LinkedList {
+    constructor() {
+        this.head = null;
+        this.length = 0;
+    }
+
+    addNode(value) {
+        const node = new ListNode(value);
+
+        if (this.length === 0) {
+            this.head = node;
+        } else {
+            let current = this.head;
+            while (current.next) {
+                current = current.next;
+            }
+            current.next = node;
+        }
+        this.length++;
+    }
+
+    getNodeByIndex(index) {
+        if (this.length === 0 || index < 0 || index > this.length) {
+            throw new RangeError('Not in list');
+        }
+
+        let current = this.head;
+        let count = 0;
+
+        while (count < index) {
+            current = current.next;
+            count++;
+        }
+        return current;
+    }
+
+    [Symbol.iterator]() {
+        return new LinkedListIterator(this);
+    }
+}
+
+const list = new LinkedList();
+list.addNode('test');
+list.addNode('test2');
+list.addNode('test3');
+
+class LinkedListIterator {
+    constructor(linkedList) {
+        this.iterable = linkedList.head;
+    }
+
+    next() {
+        if(this.iterable) {
+            const value = this.iterable.value;
+            this.iterable = this.iterable.next;
+            return {
+                value,
+                done: false,
+            };
+        }
+        return {done: true};
+    }
+}
+
+export function addNumberToList(...number) {
+    const list = new LinkedList();
+    for (let item of number) {
+        let isAdd = true;
+        for(let value of list) {
+            if (value === item) {
+                isAdd = false;
+            }
+        }
+        if(isAdd) {
+            list.addNode(item);
+        }
+    }
+    console.log(list);
+}
