@@ -55,7 +55,6 @@ export class Stack {
     }
 }
 
-
 export function checkBraces(string) {
     const stack = new Stack();
     const openBraces = ['(', '{', '['];
@@ -96,7 +95,7 @@ export function checkBraces(string) {
     return stack.isEmpty;
 }
 /*2)Сформировать список(структура данных LinkedList) целых чисел, вводимых пользователем,
-в том порядке, в котором вводятся эти числа, но без повторений элементов.*/
+в том порядке, в котором вводятся эти числа, но без повторений элементов подряд.*/
 class ListNode {
     constructor(value) {
         this.value = value;
@@ -171,15 +170,13 @@ class LinkedListIterator {
 export function addNumberToList(...number) {
     const list = new LinkedList();
     for (let item of number) {
-        let isAdd = true;
-        for(let value of list) {
-            if (value === item) {
-                isAdd = false;
-            }
+        if (list.head === null) {
+            list.addNode(item);
         }
-        if(isAdd) {
+        let previousItem = list.getNodeByIndex([list.length-1]).value;
+        if (previousItem !== item) {
             list.addNode(item);
         }
     }
-    console.log(list);
+    return list;
 }
