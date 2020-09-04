@@ -75,19 +75,19 @@ export function checkBraces(string) {
             case ')': {
                 if (stack.peek() === '(') {
                     stack.pop();
-                }
+                } else return false;
                 break;
             }
             case '}': {
                 if (stack.peek() === '{') {
                     stack.pop();
-                }
+                } else return false;
                 break;
             }
             case ']': {
                 if (stack.peek() === '[') {
                     stack.pop();
-                }
+                } else return false;
                 break;
             }
         }
@@ -167,15 +167,19 @@ class LinkedListIterator {
     }
 }
 
-export function addNumberToList(...number) {
+export function addNumberToList(string) {
     const list = new LinkedList();
-    for (let item of number) {
-        if (list.head === null) {
-            list.addNode(item);
-        }
-        let previousItem = list.getNodeByIndex([list.length-1]).value;
-        if (previousItem !== item) {
-            list.addNode(item);
+    const array = string.split('');
+    for (let item of array) {
+        if(!isNaN(+item)) {
+            if (list.head === null) {
+                list.addNode(+item);
+                continue;
+            }
+            let previousItem = list.getNodeByIndex(list.length-1).value;
+            if (previousItem !== +item) {
+                list.addNode(+item);
+            }
         }
     }
     return list;
