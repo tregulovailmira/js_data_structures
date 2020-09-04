@@ -59,6 +59,11 @@ export function checkBraces(string) {
     const stack = new Stack();
     const openBraces = ['(', '{', '['];
     const closeBraces = [')', '}', ']'];
+    const braceObject = {
+        ')': '(',
+        '}': '{',
+        ']': '['
+    }
 
     for (const brace of string) {
         if (openBraces.includes(brace)) {
@@ -71,25 +76,10 @@ export function checkBraces(string) {
             }
         }
 
-        switch (brace) {
-            case ')': {
-                if (stack.peek() === '(') {
-                    stack.pop();
-                } else return false;
-                break;
-            }
-            case '}': {
-                if (stack.peek() === '{') {
-                    stack.pop();
-                } else return false;
-                break;
-            }
-            case ']': {
-                if (stack.peek() === '[') {
-                    stack.pop();
-                } else return false;
-                break;
-            }
+        if (braceObject[brace] === stack.peek()) {
+            stack.pop();
+        } else {
+            return false;
         }
     }
     return stack.isEmpty;
